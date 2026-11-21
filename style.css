@@ -94,18 +94,18 @@
 }
 
 [data-tema="f-3"] {
-  --bg-dis: #141013;
-  --bg-menu: #1f171c;
-  --bg-content: #191317;
-  --tema-ana: #e11d48;
-  --tema-hover: #be123c;
-  --kart-bg: #241b21;
+  --bg-dis: #0f1320;
+  --bg-menu: #181e30;
+  --bg-content: #131826;
+  --tema-ana: #f59e0b;
+  --tema-hover: #d97706;
+  --kart-bg: #1c2338;
   --yazi-renk: #ffffff;
-  --kart-detay-bg: #33242e;
-  --kart-detay-text: #ffe4e6;
-  --input-bg: #171115;
-  --border-renk: rgba(244, 63, 94, 0.28);
-  --muted-renk: #d4b8c4;
+  --kart-detay-bg: #26304d;
+  --kart-detay-text: #fde68a;
+  --input-bg: #111624;
+  --border-renk: rgba(245, 158, 11, 0.28);
+  --muted-renk: #cbd5e1;
   --menu-yazi: #ffffff;
 }
 /* --- SERGEN ABİ (S) --- */
