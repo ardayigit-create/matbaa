@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="tr" data-tema="varsayilan">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MatbaaPro — İş Takip &amp; Ciro Sistemi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header class="topbar">
+        <div class="logo">
+            <div class="logo-btn"><i class="fa-solid fa-print"></i></div>
+            <div class="logo-text-group">
+                <span class="logo-title">MatbaaPro</span>
+                <span class="logo-sub">İş Takip &amp; Kasa</span>
+            </div>
+        </div>
+        <div class="section-title">
+            <span id="guncel-tarih"></span>
+            <h2 id="sayfa-baslik">Ana Sayfa - Yeni İş Girişi</h2>
+        </div>
+    </header>
+
+    <main class="content">
+        <nav class="menu" aria-label="Ana Menü">
+            <ul class="nav-ul">
+                <li>
+                    <button class="nav-btn active" data-sayfa="anasayfa" onclick="sayfaGoster('anasayfa')">
+                        <i class="fa-solid fa-house"></i>
+                        <span class="nav-label">Ana Sayfa</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-btn" data-sayfa="grafik" onclick="sayfaGoster('grafik')">
+                        <i class="fa-solid fa-pen-ruler"></i>
+                        <span class="nav-label">Grafik</span>
+                        <span class="nav-badge" id="badge-grafik">0</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-btn" data-sayfa="basim" onclick="sayfaGoster('basim')">
+                        <i class="fa-solid fa-industry"></i>
+                        <span class="nav-label">Basım</span>
+                        <span class="nav-badge" id="badge-basim">0</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-btn" data-sayfa="teslim" onclick="sayfaGoster('teslim')">
+                        <i class="fa-solid fa-truck-fast"></i>
+                        <span class="nav-label">Teslim</span>
+                        <span class="nav-badge" id="badge-teslim">0</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-btn" data-sayfa="ciro" onclick="sayfaGoster('ciro')">
+                        <i class="fa-solid fa-wallet"></i>
+                        <span class="nav-label">Ciro</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-btn" data-sayfa="ayarlar" onclick="sayfaGoster('ayarlar')">
+                        <i class="fa-solid fa-gear"></i>
+                        <span class="nav-label">Ayarlar</span>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- ANA SAYFA -->
+        <section id="sayfa-anasayfa" class="sayfa aktif">
+            <div class="main-container">
+                <!-- Özet İstatistik Kartları -->
+                <div class="ozet-grid">
+                    <div class="ozet-kart" onclick="sayfaGoster('grafik')">
+                        <div class="ozet-ikon"><i class="fa-solid fa-layer-group"></i></div>
+                        <div class="ozet-bilgi">
+                            <span class="ozet-etiket">Aktif İşler</span>
+                            <strong id="ozet-aktif" class="ozet-deger">0</strong>
+                        </div>
+                    </div>
+                    <div class="ozet-kart uyari" onclick="sayfaGoster('grafik')">
+                        <div class="ozet-ikon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                        <div class="ozet-bilgi">
+                            <span class="ozet-etiket">Revizyon / Hatalı</span>
+                            <strong id="ozet-hatali" class="ozet-deger">0</strong>
+                        </div>
+                    </div>
+                    <div class="ozet-kart basari" onclick="sayfaGoster('teslim')">
+                        <div class="ozet-ikon"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="ozet-bilgi">
+                            <span class="ozet-etiket">Teslim Edilen</span>
+                            <strong id="ozet-tamamlanan" class="ozet-deger">0</strong>
+                        </div>
+                    </div>
+                    <div class="ozet-kart finans" onclick="sayfaGoster('ciro')">
+                        <div class="ozet-ikon"><i class="fa-solid fa-coins"></i></div>
+                        <div class="ozet-bilgi">
+                            <span class="ozet-etiket">Bugünkü Net Ciro</span>
+                            <strong id="ozet-ciro" class="ozet-deger">0,00 ₺</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Yeni İş Formu -->
+                <div class="container-box">
+                    <div class="box-header">
+                        <h3><i class="fa-solid fa-plus-circle tema-ikon"></i> Yeni Matbaa İşi Tanımla</h3>
+                        <span class="box-hint">* Zorunlu alanlar</span>
+                    </div>
+                    <hr>
+                    <form id="yeni-is-form" onsubmit="event.preventDefault(); yeniMatbaaIsiEkle();">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="yeni-musteri">Müşteri / Firma Adı *</label>
+                                <input type="text" id="yeni-musteri" class="form-input" placeholder="Örn: Vadi Gayrimenkul" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="yeni-telefon">Müşteri Telefonu</label>
+                                <input type="tel" id="yeni-telefon" class="form-input" placeholder="Örn: 05xx xxx xx xx">
+                            </div>
+                            <div class="form-group">
+                                <label for="yeni-is-adi">İşin Adı / Detayı *</label>
+                                <input type="text" id="yeni-is-adi" class="form-input" placeholder="Örn: 2000 Adet Mat Selefon Kartvizit" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="yeni-grafiker">Sorumlu Grafiker *</label>
+                                <input type="text" id="yeni-grafiker" class="form-input" placeholder="Örn: Selin Kaya" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="yeni-teslim-konum">İşin Teslim Edileceği Konum</label>
+                                <input type="text" id="yeni-teslim-konum" class="form-input" placeholder="Örn: Başakşehir / Atölye Teslim / Adres">
+                            </div>
+                            <div class="form-group">
+                                <label for="yeni-onay-gun">Onay Bekleme Süresi (Gün)</label>
+                                <input type="number" id="yeni-onay-gun" class="form-input" value="4" min="1" max="60" step="1">
+                            </div>
+                            <div class="form-group">
+                                <label for="yeni-oncelik">Öncelik Durumu</label>
+                                <select id="yeni-oncelik" class="form-input">
+                                    <option value="normal">Normal</option>
+                                    <option value="acil">Acil (Öncelikli)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="yeni-sure">Tahmini Süre</label>
+                                <input type="text" id="yeni-sure" class="form-input" placeholder="Örn: 2 Saat / 1 Gün">
+                            </div>
+                            <div class="form-group">
+                                <label for="yeni-ucret">Bizim Verdiğimiz Fiyat (₺) <small class="muted">(Opsiyonel)</small></label>
+                                <input type="number" id="yeni-ucret" class="form-input" placeholder="Örn: 1500" min="0" step="0.01" oninput="fiyatKarsilastirmaGuncelle('yeni-ucret', 'yeni-piyasa-degeri', 'yeni-fiyat-karsilastirma')">
+                            </div>
+                            <div class="form-group">
+                                <label for="yeni-piyasa-degeri">İşin Piyasa Değeri (₺) <small class="muted">(Karşılaştırma)</small></label>
+                                <input type="number" id="yeni-piyasa-degeri" class="form-input" placeholder="Örn: 2200" min="0" step="0.01" oninput="fiyatKarsilastirmaGuncelle('yeni-ucret', 'yeni-piyasa-degeri', 'yeni-fiyat-karsilastirma')">
+                            </div>
+                            <div class="form-group">
+                                <label for="yeni-baslangic">Başlangıç Zamanı</label>
+                                <input type="text" id="yeni-baslangic" class="form-input" placeholder="Örn: Bugün 10:00">
+                            </div>
+                            <div class="form-group">
+                                <label for="yeni-bitis">Hedef Bitiş Zamanı</label>
+                                <input type="text" id="yeni-bitis" class="form-input" placeholder="Örn: Bugün 14:00">
+                            </div>
+                        </div>
+
+                        <div id="yeni-fiyat-karsilastirma" class="fiyat-karsilastirma">
+                            <span><i class="fa-solid fa-scale-balanced tema-ikon"></i> Fiyat Karşılaştırması:</span>
+                            <span class="muted">Piyasa değeri ve verilen fiyat girildiğinde hesaplanır.</span>
+                        </div>
+
+                        <div class="form-group mt-15">
+                            <label for="yeni-not">Teknik Not / Açıklama <small class="muted">(Opsiyonel)</small></label>
+                            <textarea id="yeni-not" class="form-input form-textarea" rows="2" placeholder="Örn: 350gr kuşe, çift yön, laklı..."></textarea>
+                        </div>
+
+                        <label class="checkbox-kutu" for="yeni-foto-istiyor">
+                            <input type="checkbox" id="yeni-foto-istiyor">
+                            <span>Müşteri Önizleme / Tasarım Fotoğrafı İstiyor mu?</span>
+                        </label>
+
+                        <button type="submit" class="btn-is btn-tam">
+                            <i class="fa-solid fa-paper-plane"></i> İşi Sisteme Kaydet ve Grafiğe Gönder
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- GRAFİK SAYFASI -->
+        <section id="sayfa-grafik" class="sayfa">
+            <div class="main-container">
+                <div class="tracker container-box">
+                    <div class="tracker-title">
+                        <div class="logo-btn ikon-acik"><i class="fa-solid fa-pen-ruler"></i></div>
+                        <h3>1. Grafik &amp; Tasarım Stüdyosu</h3>
+                        <span id="grafik-sayac">0 Aktif İş</span>
+                    </div>
+                    <hr>
+                    <div class="filtre-bar">
+                        <div class="arama-kutu">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="arama-grafik" class="form-input" placeholder="Müşteri, iş adı, kod, telefon veya grafiker ara..." oninput="matbaaKartlariniCiz()">
+                        </div>
+                        <select id="filtre-grafik" class="form-input filtre-select" onchange="matbaaKartlariniCiz()">
+                            <option value="hepsi">Tümü</option>
+                            <option value="acil">Sadece Acil</option>
+                            <option value="hatali">Sadece Hatalı / Revizyon</option>
+                            <option value="foto">Fotoğraf İsteyenler</option>
+                        </select>
+                    </div>
+                    <div class="is-kartlari-alani" id="grafik-liste"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BASIM SAYFASI -->
+        <section id="sayfa-basim" class="sayfa">
+            <div class="main-container">
+                <!-- Basım Kısmı Formu (İlk sayfa yapısına paralel, ileride kolayca özelleştirilebilir yapı) -->
+                <div class="container-box">
+                    <div class="box-header">
+                        <h3><i class="fa-solid fa-sliders tema-ikon"></i> Basım Operasyon Formu</h3>
+                        <span class="box-hint">Esnek modüler yapı</span>
+                    </div>
+                    <hr>
+                    <form id="basim-is-form" onsubmit="event.preventDefault(); basimKaydiEkle();">
+                        <div class="form-grid" id="basim-dinamik-alanlar">
+                            <div class="form-group">
+                                <label for="basim-is-secim">Aktif / Bekleyen İş Seçimi</label>
+                                <select id="basim-is-secim" class="form-input" onchange="basimSecilenIsiDoldur()">
+                                    <option value="">-- Yeni Basım Kaydı / İş Seçin --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="basim-makine">Basım Makinesi / Parkur</label>
+                                <input type="text" id="basim-makine" class="form-input" placeholder="Örn: Dijital Baskı / Banner / Folyo">
+                            </div>
+                            <div class="form-group">
+                                <label for="basim-operator">Basım Sorumlusu</label>
+                                <input type="text" id="basim-operator" class="form-input" placeholder="Örn: Operatör Adı">
+                            </div>
+                            <div class="form-group">
+                                <label for="basim-ek-not">Basım Parametresi / Not</label>
+                                <input type="text" id="basim-ek-not" class="form-input" placeholder="İleride eklenecek alanlar için hazır not">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-is btn-tam">
+                            <i class="fa-solid fa-print"></i> Basım Bilgilerini İşe İşle ve Kaydet
+                        </button>
+                    </form>
+                </div>
+
+                <div class="tracker container-box">
+                    <div class="tracker-title">
+                        <div class="logo-btn ikon-acik"><i class="fa-solid fa-industry"></i></div>
+                        <h3>2. Basım Parkuru</h3>
+                        <span id="basim-sayac">0 Aktif İş</span>
+                    </div>
+                    <hr>
+                    <div class="filtre-bar">
+                        <div class="arama-kutu">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="arama-basim" class="form-input" placeholder="Müşteri, iş adı, kod, telefon veya grafiker ara..." oninput="matbaaKartlariniCiz()">
+                        </div>
+                        <select id="filtre-basim" class="form-input filtre-select" onchange="matbaaKartlariniCiz()">
+                            <option value="hepsi">Tümü</option>
+                            <option value="acil">Sadece Acil</option>
+                            <option value="hatali">Sadece Hatalı / Revizyon</option>
+                            <option value="foto">Fotoğraf İsteyenler</option>
+                        </select>
+                    </div>
+                    <div class="is-kartlari-alani" id="basim-liste"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TESLİM SAYFASI -->
+        <section id="sayfa-teslim" class="sayfa">
+            <div class="main-container">
+                <div class="tracker container-box">
+                    <div class="tracker-title">
+                        <div class="logo-btn ikon-acik"><i class="fa-solid fa-truck-fast"></i></div>
+                        <h3>3. Teslimat &amp; Sevkiyat</h3>
+                        <span id="teslim-sayac">0 Aktif İş</span>
+                    </div>
+                    <hr>
+                    <div class="filtre-bar">
+                        <div class="arama-kutu">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="arama-teslim" class="form-input" placeholder="Müşteri, iş adı, kod, telefon veya grafiker ara..." oninput="matbaaKartlariniCiz()">
+                        </div>
+                        <select id="filtre-teslim" class="form-input filtre-select" onchange="matbaaKartlariniCiz()">
+                            <option value="hepsi">Tümü</option>
+                            <option value="acil">Sadece Acil</option>
+                            <option value="hatali">Sadece Hatalı / Revizyon</option>
+                            <option value="foto">Fotoğraf İsteyenler</option>
+                        </select>
+                    </div>
+                    <div class="is-kartlari-alani" id="teslim-liste"></div>
+                </div>
+
+                <!-- Tamamlanan / Arşiv İşler -->
+                <div class="tracker container-box">
+                    <div class="tracker-title">
+                        <div class="logo-btn ikon-acik"><i class="fa-solid fa-box-archive"></i></div>
+                        <h3>Teslim Edilen İşler (Arşiv)</h3>
+                        <span id="arsiv-sayac">0 İş</span>
+                    </div>
+                    <hr>
+                    <div class="is-kartlari-alani" id="tamamlanan-liste"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CİRO SAYFASI -->
+        <section id="sayfa-ciro" class="sayfa">
+            <div class="main-container">
+                <!-- Tarih Seçim Alanı -->
+                <div class="container-box tarih-bar">
+                    <h3><i class="fa-solid fa-calendar-day tema-ikon"></i> Ciro Tarihi (Günlük &amp; Aylık)</h3>
+                    <div class="tarih-kontroller">
+                        <button type="button" class="btn-ikon" onclick="gunDegistir(-1)" title="Önceki Gün"><i class="fa-solid fa-chevron-left"></i></button>
+                        <input type="date" id="secilen-tarih" class="form-input tarih-input" onchange="ekraniTazele()">
+                        <button type="button" class="btn-ikon" onclick="gunDegistir(1)" title="Sonraki Gün"><i class="fa-solid fa-chevron-right"></i></button>
+                        <button type="button" class="btn-geri" onclick="buguneGit()">Bugün</button>
+                    </div>
+                </div>
+
+                <div class="balance container-box">
+                    <div class="balance-group">
+                        <div class="balance-item">
+                            <h4><i class="fa-solid fa-arrow-trend-up tema-ikon"></i> Günlük Gelen</h4>
+                            <span id="toplam-gelen" class="tutar gelir-renk">0,00 ₺</span>
+                            <span id="aylik-gelen" class="tutar-alt">Aylık Gelen: 0,00 ₺</span>
+                            <div class="hizli-giris">
+                                <input type="text" id="gelir-aciklama" class="form-input" placeholder="Açıklama (opsiyonel)">
+                                <div class="hizli-giris-satir">
+                                    <input type="number" id="gelir-girdi" class="form-input" placeholder="Tutar (₺)" min="0" step="0.01">
+                                    <button type="button" class="btn-gelir" onclick="gelir()">+ Ekle</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="balance-item">
+                            <h4><i class="fa-solid fa-arrow-trend-down gider-renk"></i> Günlük Giden</h4>
+                            <span id="toplam-gider" class="tutar gider-renk">0,00 ₺</span>
+                            <span id="aylik-gider" class="tutar-alt">Aylık Giden: 0,00 ₺</span>
+                            <div class="hizli-giris">
+                                <input type="text" id="gider-aciklama" class="form-input" placeholder="Açıklama (opsiyonel)">
+                                <div class="hizli-giris-satir">
+                                    <input type="number" id="gider-girdi" class="form-input" placeholder="Tutar (₺)" min="0" step="0.01">
+                                    <button type="button" class="btn-gider" onclick="giden()">- Ekle</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="balance-item balance-net">
+                            <h4><i class="fa-solid fa-wallet"></i> Günlük Net Ciro</h4>
+                            <span id="net-bakiye" class="tutar">0,00 ₺</span>
+                            <span id="aylik-net-ciro" class="tutar-alt">Aylık Net Ciro: 0,00 ₺</span>
+                            <p id="islem-adet-bilgi" class="muted-bilgi">Seçili günde 0 işlem</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tracker container-box">
+                    <div class="tracker-title">
+                        <div class="logo-btn ikon-acik"><i class="fa-solid fa-bullseye"></i></div>
+                        <h3>Günlük Hedef</h3>
+                        <span id="hedef-yazi">Hedef: 2.500,00 ₺</span>
+                    </div>
+                    <div class="bar-dis">
+                        <div id="hedef-bar"></div>
+                    </div>
+                    <div class="bar-alt">
+                        <span id="hedef-ilerleme-tutar">Mevcut: 0,00 ₺</span>
+                        <span id="hedef-yuzde">%0 Tamamlandı</span>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="bakiyeGrafigi"></canvas>
+                </div>
+
+                <!-- Günlük İşlem Geçmişi -->
+                <div class="container-box">
+                    <div class="box-header">
+                        <h3><i class="fa-solid fa-receipt tema-ikon"></i> Seçili Gün İşlem Geçmişi</h3>
+                    </div>
+                    <hr>
+                    <div id="kasa-gecmis-liste" class="kasa-gecmis-liste"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AYARLAR SAYFASI -->
+        <section id="sayfa-ayarlar" class="sayfa">
+            <div class="settings-container container-box">
+                <h3><i class="fa-solid fa-gear tema-ikon"></i> Uygulama Ayarları</h3>
+                <hr>
+
+           <div class="ayar-blok">
+                    <label for="tema-select" class="ayar-etiket">Tema / Renk Paleti Seçin:</label>
+                    <select id="tema-select" class="form-input" onchange="temaDegistir(this.value)">
+                        <option value="varsayilan">Varsayılan</option>
+                        <optgroup label="A">
+                            <option value="a-1">A-1</option>
+                            <option value="a-2">A-2</option>
+                            <option value="a-3">A-3</option>
+                        </optgroup>
+                        <optgroup label="F">
+                            <option value="f-1">F-1</option>
+                            <option value="f-2">F-2</option>
+                            <option value="f-3">F-3</option>
+                        </optgroup>
+                        <optgroup label="S">
+                            <option value="s-1">S-1</option>
+                            <option value="s-2">S-2</option>
+                            <option value="s-3">S-3</option>
+                        </optgroup>
+                        <optgroup label="H">
+                            <option value="h-1">H-1</option>
+                            <option value="h-2">H-2</option>
+                            <option value="h-3">H-3</option>
+                        </optgroup>
+                        <optgroup label="R">
+                            <option value="r-1">R-1</option>
+                            <option value="r-2">R-2</option>
+                            <option value="r-3">R-3</option>
+                        </optgroup>
+                        <optgroup label="Ekstra">
+                            <option value="ekstra-palet">Ekstra Palet</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div class="ayar-blok">
+                    <label for="hedef-ayar-input" class="ayar-etiket">Günlük Ciro Hedefi (₺):</label>
+                    <div class="hizli-giris-satir">
+                        <input type="number" id="hedef-ayar-input" class="form-input" min="100" step="100" placeholder="2500">
+                        <button type="button" class="btn-is" onclick="hedefKaydet()">Kaydet</button>
+                    </div>
+                </div>
+
+                <hr>
+
+                <ul class="settings-list">
+                    <li>
+                        <div class="ayar-sol">
+                            <i class="fa-solid fa-download tema-ikon"></i>
+                            <span>Verileri yedekle (JSON indir)</span>
+                        </div>
+                        <button type="button" class="btn-is" onclick="verileriYedekle()">İndir</button>
+                    </li>
+                    <li>
+                        <div class="ayar-sol">
+                            <i class="fa-solid fa-upload tema-ikon"></i>
+                            <span>Yedekten geri yükle (JSON)</span>
+                        </div>
+                        <div>
+                            <input type="file" id="yedek-dosya-input" accept=".json" hidden onchange="yedekYukle(event)">
+                            <button type="button" class="btn-geri" onclick="document.getElementById('yedek-dosya-input').click()">Yükle</button>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="ayar-sol">
+                            <i class="fa-solid fa-trash gider-renk"></i>
+                            <span>Tüm verileri sil</span>
+                        </div>
+                        <button type="button" class="btn-gider" onclick="verileriSil()">Sil</button>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <!-- İŞ DÜZENLEME MODALI -->
+    <div id="duzenle-modal" class="modal-overlay" onclick="modalDisTikla(event)">
+        <div class="modal-kutu">
+            <div class="modal-ust">
+                <h3><i class="fa-solid fa-pen-to-square tema-ikon"></i> İşi Düzenle</h3>
+                <button type="button" class="modal-kapat" onclick="modalKapat()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <hr>
+            <input type="hidden" id="edit-id">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="edit-musteri">Müşteri / Firma</label>
+                    <input type="text" id="edit-musteri" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label for="edit-telefon">Müşteri Telefonu</label>
+                    <input type="tel" id="edit-telefon" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label for="edit-ad">İşin Adı</label>
+                    <input type="text" id="edit-ad" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label for="edit-grafiker">Sorumlu Grafiker</label>
+                    <input type="text" id="edit-grafiker" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label for="edit-teslim-konum">Teslim Edilecek Konum</label>
+                    <input type="text" id="edit-teslim-konum" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label for="edit-onay-gun">Onay Bekleme Süresi (Gün)</label>
+                    <input type="number" id="edit-onay-gun" class="form-input" min="1" max="60" step="1">
+                </div>
+                <div class="form-group">
+                    <label for="edit-oncelik">Öncelik</label>
+                    <select id="edit-oncelik" class="form-input">
+                        <option value="normal">Normal</option>
+                        <option value="acil">Acil (Öncelikli)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="edit-sure">Tahmini Süre</label>
+                    <input type="text" id="edit-sure" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label for="edit-ucret">Bizim Verdiğimiz Fiyat (₺)</label>
+                    <input type="number" id="edit-ucret" class="form-input" min="0" step="0.01" oninput="fiyatKarsilastirmaGuncelle('edit-ucret', 'edit-piyasa-degeri', 'edit-fiyat-karsilastirma')">
+                </div>
+                <div class="form-group">
+                    <label for="edit-piyasa-degeri">İşin Piyasa Değeri (₺)</label>
+                    <input type="number" id="edit-piyasa-degeri" class="form-input" min="0" step="0.01" oninput="fiyatKarsilastirmaGuncelle('edit-ucret', 'edit-piyasa-degeri', 'edit-fiyat-karsilastirma')">
+                </div>
+                <div class="form-group">
+                    <label for="edit-baslangic">Başlangıç</label>
+                    <input type="text" id="edit-baslangic" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label for="edit-bitis">Hedef Bitiş</label>
+                    <input type="text" id="edit-bitis" class="form-input">
+                </div>
+            </div>
+
+            <div id="edit-fiyat-karsilastirma" class="fiyat-karsilastirma">
+                <span><i class="fa-solid fa-scale-balanced tema-ikon"></i> Fiyat Karşılaştırması:</span>
+                <span class="muted">-</span>
+            </div>
+
+            <div class="form-group mt-15">
+                <label for="edit-not">Teknik Not</label>
+                <textarea id="edit-not" class="form-input form-textarea" rows="2"></textarea>
+            </div>
+            <label class="checkbox-kutu" for="edit-foto">
+                <input type="checkbox" id="edit-foto">
+                <span>Müşteri Önizleme / Tasarım Fotoğrafı İstiyor</span>
+            </label>
+            <div class="modal-alt">
+                <button type="button" class="btn-geri" onclick="modalKapat()">İptal</button>
+                <button type="button" class="btn-is" onclick="isDuzenlemeKaydet()">Değişiklikleri Kaydet</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST BİLDİRİM ALANI -->
+    <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <script src="java.js"></script>
+</body>
+</html>
