@@ -100,6 +100,82 @@ function fiyatKarsilastirmaGuncelle(ucretId, piyasaId, hedefId) {
 }
 
 // ==============================
+// GÜNÜN KELİMESİ (YAN PANEL)
+// ==============================
+const KELIME_HAVUZU = [
+    {
+        kelime: 'Teenni',
+        anlam: 'Acele etmeme, ağırbaşlılıkla ve ölçüp biçerek davranma.',
+        ornek: 'Baskıya göndermeden önce tasarımı biraz teenniyle gözden geçirmek iyi olur.'
+    },
+    {
+        kelime: 'İntiba',
+        anlam: 'Bir kimse veya şey üzerinde bırakılan ilk izlenim, etki.',
+        ornek: 'Sayfanın ilk açılışındaki renk dengesi kullanıcıda güçlü bir intiba bırakıyor.'
+    },
+    {
+        kelime: 'Nüans',
+        anlam: 'İki renk, ses veya anlam arasındaki küçük ama belirleyici ayrıntı.',
+        ornek: 'Koyu zeminde iki ton arasındaki ince nüans tasarımı bambaşka bir yere taşıyor.'
+    },
+    {
+        kelime: 'Mütemadiyen',
+        anlam: 'Sürekli olarak, ara vermeden, durmaksızın.',
+        ornek: 'Gün boyunca yeni işler mütemadiyen sıraya giriyor.'
+    },
+    {
+        kelime: 'Vukuf',
+        anlam: 'Bir konuyu derinlemesine bilme, hâkim olma.',
+        ornek: 'Kullandığın araçlara tam vukufiyet sağladığında iş çok daha akıcı ilerliyor.'
+    },
+    {
+        kelime: 'Sükûnet',
+        anlam: 'Sessizlik, dinginlik ve iç huzuru.',
+        ornek: 'Günün en yoğun saatinden sonra gelen o sükûnet insana iyi geliyor.'
+    },
+    {
+        kelime: 'İtimat',
+        anlam: 'Güvenme, inanma, birine dayanma.',
+        ornek: 'Zamanında teslim edilen her iş müşterinin ekibe olan itimadını artırıyor.'
+    },
+    {
+        kelime: 'Ahenk',
+        anlam: 'Birbirine uyan parçaların oluşturduğu düzenli ve hoş bütünlük.',
+        ornek: 'Menü, kartlar ve tipografi arasındaki ahenk arayüzü yorucu olmaktan çıkarıyor.'
+    },
+    {
+        kelime: 'İtimam',
+        anlam: 'Bir işe özen gösterme, titizlikle eğilme.',
+        ornek: 'Kesim paylarına gösterilen itimam baskı kalitesini doğrudan belli ediyor.'
+    },
+    {
+        kelime: 'Sebat',
+        anlam: 'Sözünde veya kararında durma, vazgeçmeden sürdürme.',
+        ornek: 'Küçük adımlarla da olsa sürdürülen sebat uzun vadede en sağlam sonucu veriyor.'
+    }
+];
+
+function gununKelimesiniYukle() {
+    if (window.innerWidth <= 768) return;
+
+    const kutuEl = document.getElementById('gunun-kelimesi-kutu');
+    const kelimeEl = document.getElementById('gunun-kelimesi');
+    const anlamEl = document.getElementById('gunun-kelime-anlam');
+    const ornekEl = document.getElementById('gunun-kelime-ornek');
+
+    if (!kutuEl || !kelimeEl || !anlamEl || !ornekEl || KELIME_HAVUZU.length === 0) return;
+
+    const simdi = new Date();
+    const gunBaslangic = new Date(simdi.getFullYear(), simdi.getMonth(), simdi.getDate());
+    const gunIndex = Math.floor(gunBaslangic.getTime() / (1000 * 60 * 60 * 24));
+    const secilen = KELIME_HAVUZU[Math.abs(gunIndex) % KELIME_HAVUZU.length];
+
+    kelimeEl.textContent = secilen.kelime;
+    anlamEl.textContent = secilen.anlam;
+    ornekEl.textContent = `“${secilen.ornek}”`;
+}
+
+// ==============================
 // SABİTLER VE VERİ YÖNETİMİ
 // ==============================
 const ANAHTAR = 'finbuddy-islemler';
@@ -798,8 +874,13 @@ function matbaaKartlariniCiz() {
 // TEMA, AYARLAR VE YEDEKLEME
 // ==============================
 function temaDegistir(temaAdi) {
-    document.documentElement.setAttribute('data-tema', temaAdi);
-    try { localStorage.setItem(TEMA_ANAHTAR, temaAdi); } catch (e) {}
+    const secilenTema = temaAdi || 'varsayilan';
+    document.documentElement.setAttribute('data-tema', secilenTema);
+    const selectEl = document.getElementById('tema-select');
+    if (selectEl && selectEl.value !== secilenTema) {
+        selectEl.value = secilenTema;
+    }
+    try { localStorage.setItem(TEMA_ANAHTAR, secilenTema); } catch (e) {}
     ekraniTazele();
 }
 
@@ -991,4 +1072,7 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') modalKapat();
 });
 
+window.addEventListener('resize', gununKelimesiniYukle);
+
+gununKelimesiniYukle();
 ekraniTazele();
