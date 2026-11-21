@@ -108,6 +108,7 @@
   --muted-renk: #cbd5e1;
   --menu-yazi: #ffffff;
 }
+
 /* --- SERGEN ABİ (S) --- */
 [data-tema="s-1"] {
   --bg-dis: #574b3d;
@@ -382,7 +383,7 @@ li { list-style: none; }
   align-items: center;
   gap: 12px;
   padding: 0 14px;
-  color: rgba(255, 255, 255, 0.88);
+  color: var(--menu-yazi, rgba(255, 255, 255, 0.88));
   border: none;
   font-size: 14px;
   font-weight: 600;
