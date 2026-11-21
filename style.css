@@ -110,18 +110,18 @@
 }
 
 [data-tema="f-3"] {
-  --bg-dis: #0f1320;
-  --bg-menu: #181e30;
-  --bg-content: #131826;
-  --tema-ana: #f59e0b;
-  --tema-hover: #d97706;
-  --kart-bg: #1c2338;
+  --bg-dis: #141013;
+  --bg-menu: #1f171c;
+  --bg-content: #191317;
+  --tema-ana: #e11d48;
+  --tema-hover: #be123c;
+  --kart-bg: #241b21;
   --yazi-renk: #ffffff;
-  --kart-detay-bg: #26304d;
-  --kart-detay-text: #fde68a;
-  --input-bg: #111624;
-  --border-renk: rgba(245, 158, 11, 0.28);
-  --muted-renk: #cbd5e1;
+  --kart-detay-bg: #33242e;
+  --kart-detay-text: #ffe4e6;
+  --input-bg: #171115;
+  --border-renk: rgba(244, 63, 94, 0.28);
+  --muted-renk: #d4b8c4;
   --menu-yazi: #ffffff;
 }
 
@@ -381,6 +381,9 @@ li { list-style: none; }
   background-color: var(--bg-menu);
   padding: 20px 16px;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
 .nav-ul {
@@ -432,6 +435,62 @@ li { list-style: none; }
 
 .nav-btn.active .nav-badge {
   background: rgba(0, 0, 0, 0.25);
+}
+
+/* YAN PANEL GÜNÜN KELİMESİ KUTUSU */
+.menu-kelime-kutu {
+  margin-top: auto;
+  padding: 13px 14px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--tema-ana) 10%, var(--bg-dis));
+  border: 1px solid var(--border-renk);
+  color: var(--menu-yazi, #f8fafc);
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.kelime-ust {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.kelime-etiket {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  color: var(--tema-ana);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  
+}
+
+.kelime-baslik {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--menu-yazi, #f8fafc);
+  line-height: 1.25;
+}
+
+.kelime-anlam {
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.48;
+  color: var(--menu-yazi, rgba(255, 255, 255, 0.94));
+  opacity: 0.96;
+}
+
+.kelime-ornek {
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.45;
+  font-style: italic;
+  color: var(--tema-ana);
+  padding-top: 7px;
+  border-top: 1px dashed var(--border-renk);
 }
 
 .sayfa {
@@ -1191,10 +1250,11 @@ hr {
 }
 
 @media (max-width: 768px) {
+  .menu-kelime-kutu { display: none; }
   .topbar { padding: 0 16px; height: 68px; }
   .section-title h2 { font-size: 15px; }
   .content { flex-direction: column; height: auto; min-height: calc(100vh - 68px); }
-  .menu { width: 100%; padding: 10px; }
+  .menu { width: 100%; padding: 10px; gap: 0; }
   .nav-ul { flex-direction: row; gap: 6px; overflow-x: auto; }
   .nav-btn {
     justify-content: center;
