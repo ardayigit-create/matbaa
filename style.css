@@ -39,7 +39,7 @@
   --tema-ana: #916bbf;
   --tema-hover: #3d2c8d;
   --kart-bg: #1cdc5b;
-  --yazi-renk: #0b1021;
+  --yazi-renk: #ffffff;
   --kart-detay-bg: #180e3d;
   --kart-detay-text: #f3e8ff;
   --input-bg: #251554;
@@ -64,48 +64,48 @@
 
 /* --- FURKAN ABİ (F) --- */
 [data-tema="f-1"] {
-  --bg-dis: #2d3518;
-  --bg-menu: #4f5b2a;
-  --bg-content: #f5efe3;
-  --tema-ana: #b8892d;
-  --tema-hover: #4f5b2a;
-  --kart-bg: #ffffff;
-  --yazi-renk: #232813;
-  --kart-detay-bg: #d8d9a8;
-  --kart-detay-text: #3a421e;
-  --input-bg: #fcfaf5;
-  --border-renk: rgba(79, 91, 42, 0.24);
-  --muted-renk: #646b47;
+  --bg-dis: #181512;
+  --bg-menu: #241f1a;
+  --bg-content: #2e2822;
+  --tema-ana: #d97736;
+  --tema-hover: #b85d22;
+  --kart-bg: #241f1a;
+  --yazi-renk: #f5efe6;
+  --kart-detay-bg: #3b3229;
+  --kart-detay-text: #f3c69f;
+  --input-bg: #1d1915;
+  --border-renk: rgba(217, 119, 54, 0.28);
+  --muted-renk: #b5a898;
 }
 
 [data-tema="f-2"] {
-  --bg-dis: #122b20;
-  --bg-menu: #1d4533;
-  --bg-content: #f7ede0;
-  --tema-ana: #5e3122;
-  --tema-hover: #1d4533;
-  --kart-bg: #ffffff;
-  --yazi-renk: #1d2d25;
-  --kart-detay-bg: #f9d2ba;
-  --kart-detay-text: #4a261a;
-  --input-bg: #fffaf4;
-  --border-renk: rgba(29, 69, 51, 0.22);
-  --muted-renk: #5c6b63;
+  --bg-dis: #11161d;
+  --bg-menu: #19212b;
+  --bg-content: #1e2733;
+  --tema-ana: #38bdf8;
+  --tema-hover: #0284c7;
+  --kart-bg: #19212b;
+  --yazi-renk: #e6edf3;
+  --kart-detay-bg: #273444;
+  --kart-detay-text: #bae6fd;
+  --input-bg: #141b24;
+  --border-renk: rgba(56, 189, 248, 0.25);
+  --muted-renk: #9fb0c2;
 }
 
 [data-tema="f-3"] {
-  --bg-dis: #2d3518;
-  --bg-menu: #4f5b2a;
-  --bg-content: #f5efe3;
-  --tema-ana: #b8892d;
-  --tema-hover: #8f681d;
-  --kart-bg: #ffffff;
-  --yazi-renk: #232813;
-  --kart-detay-bg: #d8c9a8;
-  --kart-detay-text: #3f3823;
-  --input-bg: #fcfaf5;
-  --border-renk: rgba(184, 137, 45, 0.28);
-  --muted-renk: #6c6348;
+  --bg-dis: #e6e0d4;
+  --bg-menu: #f4f1ea;
+  --bg-content: #faf8f4;
+  --tema-ana: #1d4ed8;
+  --tema-hover: #1e40af;
+  --kart-bg: #fffdf9;
+  --yazi-renk: #1c1b18;
+  --kart-detay-bg: #ece6d8;
+  --kart-detay-text: #1e3a8a;
+  --input-bg: #ffffff;
+  --border-renk: rgba(28, 27, 24, 0.18);
+  --muted-renk: #5c584e;
 }
 
 /* --- SERGEN ABİ (S) --- */
