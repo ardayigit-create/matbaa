@@ -62,6 +62,22 @@
   --muted-renk: #c996cc;
 }
 
+[data-tema="a-4"] {
+  --bg-dis: #080a0f;
+  --bg-menu: #0c1424;
+  --bg-content: #0a101d;
+  --tema-ana: #2dd4bf;
+  --tema-hover: #7c3aed;
+  --kart-bg: #111b2e;
+  --yazi-renk: #f8fafc;
+  --kart-detay-bg: #1a2238;
+  --kart-detay-text: #a7f3d0;
+  --input-bg: #090e1a;
+  --border-renk: rgba(45, 212, 191, 0.25);
+  --muted-renk: #a5b4fc;
+  --menu-yazi: #f8fafc;
+}
+
 /* --- FURKAN ABİ (F) --- */
 [data-tema="f-1"] {
   --bg-dis: #181512;
