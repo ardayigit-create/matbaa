@@ -66,6 +66,15 @@
                     </button>
                 </li>
             </ul>
+
+            <div class="menu-kelime-kutu" id="gunun-kelimesi-kutu">
+                <div class="kelime-ust">
+                    <span class="kelime-etiket"><i class="fa-solid fa-feather-pointed"></i> GÜNÜN KELİMESİ</span>
+                    <span class="kelime-baslik" id="gunun-kelimesi">Yükleniyor...</span>
+                </div>
+                <p class="kelime-anlam" id="gunun-kelime-anlam"></p>
+                <p class="kelime-ornek" id="gunun-kelime-ornek"></p>
+            </div>
         </nav>
 
         <!-- ANA SAYFA -->
@@ -218,7 +227,6 @@
         <!-- BASIM SAYFASI -->
         <section id="sayfa-basim" class="sayfa">
             <div class="main-container">
-                <!-- Basım Kısmı Formu (İlk sayfa yapısına paralel, ileride kolayca özelleştirilebilir yapı) -->
                 <div class="container-box">
                     <div class="box-header">
                         <h3><i class="fa-solid fa-sliders tema-ikon"></i> Basım Operasyon Formu</h3>
@@ -401,7 +409,7 @@
                 <h3><i class="fa-solid fa-gear tema-ikon"></i> Uygulama Ayarları</h3>
                 <hr>
 
-           <div class="ayar-blok">
+                <div class="ayar-blok">
                     <label for="tema-select" class="ayar-etiket">Tema / Renk Paleti Seçin:</label>
                     <select id="tema-select" class="form-input" onchange="temaDegistir(this.value)">
                         <option value="varsayilan">Varsayılan</option>
