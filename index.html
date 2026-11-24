@@ -54,6 +54,20 @@
                     </button>
                 </li>
                 <li>
+                    <button class="nav-btn" data-sayfa="iptal" onclick="sayfaGoster('iptal')">
+                        <i class="fa-solid fa-ban"></i>
+                        <span class="nav-label">İptal</span>
+                        <span class="nav-badge" id="badge-iptal">0</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-btn" data-sayfa="musteriler" onclick="sayfaGoster('musteriler')">
+                        <i class="fa-solid fa-address-book"></i>
+                        <span class="nav-label">Müşteriler</span>
+                        <span class="nav-badge" id="badge-musteriler">0</span>
+                    </button>
+                </li>
+                <li>
                     <button class="nav-btn" data-sayfa="ciro" onclick="sayfaGoster('ciro')">
                         <i class="fa-solid fa-wallet"></i>
                         <span class="nav-label">Ciro</span>
@@ -89,7 +103,14 @@
                             <strong id="ozet-aktif" class="ozet-deger">0</strong>
                         </div>
                     </div>
-                    <div class="ozet-kart uyari" onclick="sayfaGoster('grafik')">
+                    <div class="ozet-kart" onclick="sayfaGoster('basim')">
+                        <div class="ozet-ikon"><i class="fa-solid fa-industry"></i></div>
+                        <div class="ozet-bilgi">
+                            <span class="ozet-etiket">Basımda Olan İşler</span>
+                            <strong id="ozet-basim" class="ozet-deger">0</strong>
+                        </div>
+                    </div>
+                    <div class="ozet-kart uyari" onclick="sayfaGoster('iptal')">
                         <div class="ozet-ikon"><i class="fa-solid fa-triangle-exclamation"></i></div>
                         <div class="ozet-bilgi">
                             <span class="ozet-etiket">Revizyon / Hatalı</span>
@@ -122,8 +143,12 @@
                     <form id="yeni-is-form" onsubmit="event.preventDefault(); yeniMatbaaIsiEkle();">
                         <div class="form-grid">
                             <div class="form-group">
+                                <label for="yeni-musteri-kodu">Müşteri Kodu <small class="muted">(Otomatik / Opsiyonel)</small></label>
+                                <input type="text" id="yeni-musteri-kodu" class="form-input" placeholder="Örn: M-001" oninput="musteriKodundanDoldur()">
+                            </div>
+                            <div class="form-group">
                                 <label for="yeni-musteri">Müşteri / Firma Adı *</label>
-                                <input type="text" id="yeni-musteri" class="form-input" placeholder="Örn: Vadi Gayrimenkul" required>
+                                <input type="text" id="yeni-musteri" class="form-input" placeholder="Örn: Vadi Gayrimenkul" oninput="musteriAdindanKodEsles()" required>
                             </div>
                             <div class="form-group">
                                 <label for="yeni-telefon">Müşteri Telefonu</label>
@@ -131,11 +156,31 @@
                             </div>
                             <div class="form-group">
                                 <label for="yeni-is-adi">İşin Adı / Detayı *</label>
-                                <input type="text" id="yeni-is-adi" class="form-input" placeholder="Örn: 2000 Adet Mat Selefon Kartvizit" required>
+                                <input type="text" id="yeni-is-adi" class="form-input" placeholder="Örn: Mat Selefon Kartvizit" required>
                             </div>
                             <div class="form-group">
                                 <label for="yeni-grafiker">Sorumlu Grafiker *</label>
                                 <input type="text" id="yeni-grafiker" class="form-input" placeholder="Örn: Selin Kaya" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="yeni-adet">Adet</label>
+                                <input type="number" id="yeni-adet" class="form-input" value="1" min="1" step="1" oninput="adetBirimFiyatHesapla('yeni-adet', 'yeni-birim-fiyat', 'yeni-ucret', 'yeni-maliyet', 'yeni-fiyat-karsilastirma')">
+                            </div>
+                            <div class="form-group">
+                                <label for="yeni-birim-fiyat">Birim Fiyat (₺) <small class="muted">(Opsiyonel)</small></label>
+                                <input type="number" id="yeni-birim-fiyat" class="form-input" placeholder="Örn: 1.50" min="0" step="0.01" oninput="adetBirimFiyatHesapla('yeni-adet', 'yeni-birim-fiyat', 'yeni-ucret', 'yeni-maliyet', 'yeni-fiyat-karsilastirma')">
+                            </div>
+                            <div class="form-group">
+                                <label for="yeni-ucret">Bizim Verdiğimiz Fiyat / Toplam (₺) <small class="muted">(Opsiyonel)</small></label>
+                                <input type="number" id="yeni-ucret" class="form-input" placeholder="Örn: 1500" min="0" step="0.01" oninput="fiyatKarsilastirmaGuncelle('yeni-ucret', 'yeni-piyasa-degeri', 'yeni-maliyet', 'yeni-fiyat-karsilastirma')">
+                            </div>
+                            <div class="form-group">
+                                <label for="yeni-maliyet">İş Maliyeti (₺) <small class="muted">(Kâr hesabı için)</small></label>
+                                <input type="number" id="yeni-maliyet" class="form-input" placeholder="Örn: 850" min="0" step="0.01" oninput="fiyatKarsilastirmaGuncelle('yeni-ucret', 'yeni-piyasa-degeri', 'yeni-maliyet', 'yeni-fiyat-karsilastirma')">
+                            </div>
+                            <div class="form-group">
+                                <label for="yeni-piyasa-degeri">İşin Piyasa Değeri (₺) <small class="muted">(Karşılaştırma)</small></label>
+                                <input type="number" id="yeni-piyasa-degeri" class="form-input" placeholder="Örn: 2200" min="0" step="0.01" oninput="fiyatKarsilastirmaGuncelle('yeni-ucret', 'yeni-piyasa-degeri', 'yeni-maliyet', 'yeni-fiyat-karsilastirma')">
                             </div>
                             <div class="form-group">
                                 <label for="yeni-teslim-konum">İşin Teslim Edileceği Konum</label>
@@ -157,14 +202,6 @@
                                 <input type="text" id="yeni-sure" class="form-input" placeholder="Örn: 2 Saat / 1 Gün">
                             </div>
                             <div class="form-group">
-                                <label for="yeni-ucret">Bizim Verdiğimiz Fiyat (₺) <small class="muted">(Opsiyonel)</small></label>
-                                <input type="number" id="yeni-ucret" class="form-input" placeholder="Örn: 1500" min="0" step="0.01" oninput="fiyatKarsilastirmaGuncelle('yeni-ucret', 'yeni-piyasa-degeri', 'yeni-fiyat-karsilastirma')">
-                            </div>
-                            <div class="form-group">
-                                <label for="yeni-piyasa-degeri">İşin Piyasa Değeri (₺) <small class="muted">(Karşılaştırma)</small></label>
-                                <input type="number" id="yeni-piyasa-degeri" class="form-input" placeholder="Örn: 2200" min="0" step="0.01" oninput="fiyatKarsilastirmaGuncelle('yeni-ucret', 'yeni-piyasa-degeri', 'yeni-fiyat-karsilastirma')">
-                            </div>
-                            <div class="form-group">
                                 <label for="yeni-baslangic">Başlangıç Zamanı</label>
                                 <input type="text" id="yeni-baslangic" class="form-input" placeholder="Örn: Bugün 10:00">
                             </div>
@@ -175,8 +212,8 @@
                         </div>
 
                         <div id="yeni-fiyat-karsilastirma" class="fiyat-karsilastirma">
-                            <span><i class="fa-solid fa-scale-balanced tema-ikon"></i> Fiyat Karşılaştırması:</span>
-                            <span class="muted">Piyasa değeri ve verilen fiyat girildiğinde hesaplanır.</span>
+                            <span><i class="fa-solid fa-scale-balanced tema-ikon"></i> Fiyat &amp; Kâr Özeti:</span>
+                            <span class="muted">Adet, birim fiyat, tutar veya maliyet girildiğinde hesaplanır.</span>
                         </div>
 
                         <div class="form-group mt-15">
@@ -318,6 +355,79 @@
                     </div>
                     <hr>
                     <div class="is-kartlari-alani" id="tamamlanan-liste"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- İPTAL İŞLER SAYFASI -->
+        <section id="sayfa-iptal" class="sayfa">
+            <div class="main-container">
+                <div class="tracker container-box">
+                    <div class="tracker-title">
+                        <div class="logo-btn ikon-acik"><i class="fa-solid fa-ban"></i></div>
+                        <h3>İptal Edilen İşler</h3>
+                        <span id="iptal-sayac">0 İş</span>
+                    </div>
+                    <hr>
+                    <div class="filtre-bar">
+                        <div class="arama-kutu">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="arama-iptal" class="form-input" placeholder="İptal edilen işlerde müşteri, iş adı veya kod ara..." oninput="matbaaKartlariniCiz()">
+                        </div>
+                    </div>
+                    <div class="is-kartlari-alani" id="iptal-liste"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MÜŞTERİLER / CARİ SAYFASI -->
+        <section id="sayfa-musteriler" class="sayfa">
+            <div class="main-container">
+                <div class="container-box">
+                    <div class="box-header">
+                        <h3><i class="fa-solid fa-user-plus tema-ikon"></i> Yeni Müşteri / Cari Kartı Ekle</h3>
+                        <span class="box-hint">Kod boş bırakılırsa otomatik M-xxx atanır</span>
+                    </div>
+                    <hr>
+                    <form id="yeni-musteri-form" onsubmit="event.preventDefault(); yeniMusteriEkle();">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="cari-musteri-kodu">Müşteri Kodu</label>
+                                <input type="text" id="cari-musteri-kodu" class="form-input" placeholder="Örn: M-001">
+                            </div>
+                            <div class="form-group">
+                                <label for="cari-musteri-ad">Firma / Müşteri Adı *</label>
+                                <input type="text" id="cari-musteri-ad" class="form-input" placeholder="Örn: Hakan Baskı / Nil Parke" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="cari-musteri-tel">Telefon</label>
+                                <input type="tel" id="cari-musteri-tel" class="form-input" placeholder="Örn: 05xx xxx xx xx">
+                            </div>
+                            <div class="form-group">
+                                <label for="cari-musteri-not">Cari Notu</label>
+                                <input type="text" id="cari-musteri-not" class="form-input" placeholder="Örn: Vadeli çalışır, adres/yetkili notu">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-is btn-tam">
+                            <i class="fa-solid fa-address-card"></i> Müşteri Cari Kartını Kaydet
+                        </button>
+                    </form>
+                </div>
+
+                <div class="tracker container-box">
+                    <div class="tracker-title">
+                        <div class="logo-btn ikon-acik"><i class="fa-solid fa-address-book"></i></div>
+                        <h3>Müşteri Cari Hesapları</h3>
+                        <span id="musteri-sayac">0 Müşteri</span>
+                    </div>
+                    <hr>
+                    <div class="filtre-bar">
+                        <div class="arama-kutu">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="arama-musteri" class="form-input" placeholder="Müşteri kodu, firma adı veya telefon ara..." oninput="musteriCarileriniCiz()">
+                        </div>
+                    </div>
+                    <div class="is-kartlari-alani" id="musteri-cari-liste"></div>
                 </div>
             </div>
         </section>
@@ -496,6 +606,10 @@
             <input type="hidden" id="edit-id">
             <div class="form-grid">
                 <div class="form-group">
+                    <label for="edit-musteri-kodu">Müşteri Kodu</label>
+                    <input type="text" id="edit-musteri-kodu" class="form-input" placeholder="Örn: M-001">
+                </div>
+                <div class="form-group">
                     <label for="edit-musteri">Müşteri / Firma</label>
                     <input type="text" id="edit-musteri" class="form-input">
                 </div>
@@ -510,6 +624,26 @@
                 <div class="form-group">
                     <label for="edit-grafiker">Sorumlu Grafiker</label>
                     <input type="text" id="edit-grafiker" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label for="edit-adet">Adet</label>
+                    <input type="number" id="edit-adet" class="form-input" min="1" step="1" oninput="adetBirimFiyatHesapla('edit-adet', 'edit-birim-fiyat', 'edit-ucret', 'edit-maliyet', 'edit-fiyat-karsilastirma')">
+                </div>
+                <div class="form-group">
+                    <label for="edit-birim-fiyat">Birim Fiyat (₺)</label>
+                    <input type="number" id="edit-birim-fiyat" class="form-input" min="0" step="0.01" oninput="adetBirimFiyatHesapla('edit-adet', 'edit-birim-fiyat', 'edit-ucret', 'edit-maliyet', 'edit-fiyat-karsilastirma')">
+                </div>
+                <div class="form-group">
+                    <label for="edit-ucret">Bizim Verdiğimiz Fiyat / Toplam (₺)</label>
+                    <input type="number" id="edit-ucret" class="form-input" min="0" step="0.01" oninput="fiyatKarsilastirmaGuncelle('edit-ucret', 'edit-piyasa-degeri', 'edit-maliyet', 'edit-fiyat-karsilastirma')">
+                </div>
+                <div class="form-group">
+                    <label for="edit-maliyet">İş Maliyeti (₺)</label>
+                    <input type="number" id="edit-maliyet" class="form-input" min="0" step="0.01" oninput="fiyatKarsilastirmaGuncelle('edit-ucret', 'edit-piyasa-degeri', 'edit-maliyet', 'edit-fiyat-karsilastirma')">
+                </div>
+                <div class="form-group">
+                    <label for="edit-piyasa-degeri">İşin Piyasa Değeri (₺)</label>
+                    <input type="number" id="edit-piyasa-degeri" class="form-input" min="0" step="0.01" oninput="fiyatKarsilastirmaGuncelle('edit-ucret', 'edit-piyasa-degeri', 'edit-maliyet', 'edit-fiyat-karsilastirma')">
                 </div>
                 <div class="form-group">
                     <label for="edit-teslim-konum">Teslim Edilecek Konum</label>
@@ -531,14 +665,6 @@
                     <input type="text" id="edit-sure" class="form-input">
                 </div>
                 <div class="form-group">
-                    <label for="edit-ucret">Bizim Verdiğimiz Fiyat (₺)</label>
-                    <input type="number" id="edit-ucret" class="form-input" min="0" step="0.01" oninput="fiyatKarsilastirmaGuncelle('edit-ucret', 'edit-piyasa-degeri', 'edit-fiyat-karsilastirma')">
-                </div>
-                <div class="form-group">
-                    <label for="edit-piyasa-degeri">İşin Piyasa Değeri (₺)</label>
-                    <input type="number" id="edit-piyasa-degeri" class="form-input" min="0" step="0.01" oninput="fiyatKarsilastirmaGuncelle('edit-ucret', 'edit-piyasa-degeri', 'edit-fiyat-karsilastirma')">
-                </div>
-                <div class="form-group">
                     <label for="edit-baslangic">Başlangıç</label>
                     <input type="text" id="edit-baslangic" class="form-input">
                 </div>
@@ -549,7 +675,7 @@
             </div>
 
             <div id="edit-fiyat-karsilastirma" class="fiyat-karsilastirma">
-                <span><i class="fa-solid fa-scale-balanced tema-ikon"></i> Fiyat Karşılaştırması:</span>
+                <span><i class="fa-solid fa-scale-balanced tema-ikon"></i> Fiyat &amp; Kâr Özeti:</span>
                 <span class="muted">-</span>
             </div>
 
